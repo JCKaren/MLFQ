@@ -1,6 +1,8 @@
 #include "domain/Process.hpp"
 #include "domain/SimulationEngine.hpp"
+#include "domain/SimulationConfig.hpp"
 #include "infrastructure/CsvResultsWriter.hpp"
+#include "domain/MLFQPolicy.hpp"
 #include <iostream>
 #include <vector>
 
@@ -17,8 +19,10 @@ int main() {
     config.quantums = {2, 4, 8};
     config.boost_interval = 20;
 
+    MlfqPolicy policy(processes, config);
+
     CsvResultsWriter writer("results.csv");
-    SimulationEngine engine(processes, writer, config);
+    SimulationEngine engine(processes, writer, policy);
     engine.run();
 
     return 0;
