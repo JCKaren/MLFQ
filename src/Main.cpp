@@ -13,9 +13,12 @@ int main() {
         Process(4, 3, 5)
     };
 
+    SimulationConfig config;
+    config.quantums = {2, 4, 8};
+    config.boost_interval = 20;
 
     CsvResultsWriter writer("results.csv");
-    SimulationEngine engine(processes, writer);
+    SimulationEngine engine(processes, writer, config);
     engine.run();
 
     return 0;

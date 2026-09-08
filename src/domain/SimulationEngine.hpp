@@ -1,13 +1,14 @@
 #pragma once
 #include <vector>
-#include <deque>
 #include "Process.hpp"
 #include "IResultsExporter.hpp"
+#include "SimulationConfig.hpp"
+#include "ReadyQueue.hpp"
 
 
 class SimulationEngine{
     public:
-        SimulationEngine(std::vector<Process> processes, IResultsExporter& results_exporter);
+        SimulationEngine(std::vector<Process> processes, IResultsExporter& results_exporter, SimulationConfig config);
         void run();
     
     private:
@@ -25,11 +26,10 @@ class SimulationEngine{
         void priorityBoostPhase();
 
         std::vector<Process> processes_;
-        std::vector<std::deque<int>> queues_;
+        std::vector<ReadyQueue> ready_queues_;
         int current_tick_ = 0;
         int running_ = -1;
-        size_t finished_count_ = 0;
-        const int quantums_[3] = {2, 4, 8};
-        const int BOOST_INTERVAL = 20;
+        size_t finished_count_ = 0;                         
         IResultsExporter& results_exporter_;
+        SimulationConfig config_;
 };

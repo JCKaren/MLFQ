@@ -1,10 +1,11 @@
     #include "SimulationEngine.hpp"
-    #include <iostream>
 
-    SimulationEngine::SimulationEngine(std::vector<Process> processes, IResultsExporter& results_exporter)
-        : processes_(processes), queues_(3), results_exporter_(results_exporter)
+    SimulationEngine::SimulationEngine(std::vector<Process> processes, IResultsExporter& results_exporter, SimulationConfig config)
+        : processes_(processes), results_exporter_(results_exporter), config_(config)
     {
-
+        for (size_t i = 0; i < config_.quantums.size(); ++i) {
+            ready_queues_.emplace_back(static_cast<int>(i), config_.quantums[i]);
+            }
     }
 
     void SimulationEngine::run() {
@@ -30,7 +31,7 @@
     void SimulationEngine::arrivalPhase(){
         for (size_t i = 0; i < processes_.size(); ++i) {
             if (processes_[i].arrivalTime() == current_tick_) {
-                queues_[0].push_back(i);
+                ready_queues_[0].addProcess(i);
             }
         }
     }
@@ -39,10 +40,9 @@
         if (running_ != -1) {
             return;
         }
-        for (size_t i = 0; i < queues_.size(); ++i) {
-            if (!queues_[i].empty()) {
-                running_ = queues_[i].front();
-                queues_[i].pop_front();
+        for (size_t i = 0; i < ready_queues_.size(); ++i) {
+            if (!ready_queues_[i].isEmpty()) {
+                running_ = ready_queues_[i].getNextProcess();
                 processes_[running_].resetQuantum();
                 break;
             }
@@ -64,24 +64,23 @@
             processes_[running_].finishProcess(current_tick_);
             running_ = -1;
             finished_count_++;
-        } else if (processes_[running_].quantumUsed() >= quantums_[processes_[running_].currentQueue()]) {
+        } else if (processes_[running_].quantumUsed() >= ready_queues_[processes_[running_].currentQueue()].getTimeQuantum()) {
             int current_queue = processes_[running_].currentQueue();
-            if (current_queue < static_cast<int>(queues_.size()) - 1) {
+            if (current_queue < static_cast<int>(ready_queues_.size()) - 1) {
                 processes_[running_].changeQueue(current_queue + 1);
             }
-            queues_[processes_[running_].currentQueue()].push_back(running_);
+            ready_queues_[processes_[running_].currentQueue()].addProcess(running_);
             running_ = -1;
         }
     }
 
     void SimulationEngine::priorityBoostPhase() {
-        if (current_tick_ > 0 && current_tick_ % BOOST_INTERVAL == 0){
-            for (size_t i = 1; i < queues_.size(); ++i) {
-                while (!queues_[i].empty()) {
-                    int idx = queues_[i].front();
-                    queues_[i].pop_front();
+        if (current_tick_ > 0 && current_tick_ % config_.boost_interval == 0){
+            for (size_t i = 1; i < ready_queues_.size(); ++i) {
+                while (!ready_queues_[i].isEmpty()) {
+                    int idx = ready_queues_[i].getNextProcess();
                     processes_[idx].changeQueue(0);
-                    queues_[0].push_back(idx);
+                    ready_queues_[0].addProcess(idx);
                     processes_[idx].resetQuantum();
                     }
                 }
