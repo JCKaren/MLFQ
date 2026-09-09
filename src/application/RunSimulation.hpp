@@ -1,8 +1,8 @@
 #pragma once
-#include "../domain/SimulationEngine.hpp"
-#include "../domain/MetricsCalculator.hpp"
-#include "../domain/IAggregateExporter.hpp"
-#include "../domain/IResultsExporter.hpp"
+#include "../domain/simulation/SimulationEngine.hpp"
+#include "../domain/metrics/MetricsCalculator.hpp"
+#include "../application/ports/IAggregateExporter.hpp"
+#include "../application/ports/IResultsExporter.hpp"
 
 
 class RunSimulation {

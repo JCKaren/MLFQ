@@ -1,14 +1,13 @@
-#include "domain/Process.hpp"
-#include "domain/SimulationEngine.hpp"
-#include "domain/SimulationConfig.hpp"
+#include <vector>
+#include "domain/process/Process.hpp"
+#include "domain/simulation/SimulationEngine.hpp"
+#include "domain/scheduling/SimulationConfig.hpp"
 #include "infrastructure/CsvResultsWriter.hpp"
-#include "domain/MlfqPolicy.hpp"
-#include "domain/ProcessMetrics.hpp"
-#include "domain/MetricsCalculator.hpp"
+#include "domain/scheduling/MlfqPolicy.hpp"
+#include "domain/process/ProcessMetrics.hpp"
+#include "domain/metrics/MetricsCalculator.hpp"
 #include "infrastructure/CsvAggregateWriter.hpp"
 #include "application/RunSimulation.hpp"
-#include <vector>
-
 
 int main() {
     std::vector<Process> processes = {

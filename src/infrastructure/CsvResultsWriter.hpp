@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "../domain/IResultsExporter.hpp"
+#include "../application/ports/IResultsExporter.hpp"
 
 class CsvResultsWriter : public IResultsExporter {
 public:

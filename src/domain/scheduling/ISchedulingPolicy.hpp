@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include "Process.hpp"
+#include "../process/Process.hpp"
 
 
 class ISchedulingPolicy {

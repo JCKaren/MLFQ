@@ -1,6 +1,6 @@
 #include <fstream>
-#include "CsvResultsWriter.hpp"
 #include <stdexcept>
+#include "CsvResultsWriter.hpp"
 
 CsvResultsWriter::CsvResultsWriter(std::string path)
     : path_(path)

@@ -1,5 +1,5 @@
-#include "ReadyQueue.hpp"
 #include <stdexcept>
+#include "ReadyQueue.hpp"
 
 ReadyQueue::ReadyQueue(int time_quantum) : time_quantum_(time_quantum) {
     

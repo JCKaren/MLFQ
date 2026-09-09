@@ -1,7 +1,6 @@
 #pragma once
-#include "../domain/IAggregateExporter.hpp"
 #include <string>
-
+#include "../application/ports/IAggregateExporter.hpp"
 
 class CsvAggregateWriter : public IAggregateExporter {
     public:

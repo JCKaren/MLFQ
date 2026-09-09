@@ -1,13 +1,13 @@
 $sources = @(
     "src/Main.cpp"
     "src/application/RunSimulation.cpp"
-    "src/domain/Process.cpp"
-    "src/domain/SimulationEngine.cpp"
-    "src/domain/ReadyQueue.cpp"
-    "src/domain/MlfqPolicy.cpp"
-    "src/domain/MetricsCalculator.cpp"
-    "src/infrastructure/CsvResultsWriter.cpp"
+    "src/domain/metrics/MetricsCalculator.cpp"
+    "src/domain/process/Process.cpp"
+    "src/domain/scheduling/MlfqPolicy.cpp"
+    "src/domain/scheduling/ReadyQueue.cpp"
+    "src/domain/simulation/SimulationEngine.cpp"
     "src/infrastructure/CsvAggregateWriter.cpp"
+    "src/infrastructure/CsvResultsWriter.cpp"
 )
 
 g++ -std=c++17 -Wall -Wextra -o test.exe $sources

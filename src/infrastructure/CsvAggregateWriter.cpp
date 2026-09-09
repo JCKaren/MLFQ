@@ -1,6 +1,6 @@
 #include <fstream>
-#include "CsvAggregateWriter.hpp"
 #include <stdexcept>
+#include "CsvAggregateWriter.hpp"
 
 CsvAggregateWriter::CsvAggregateWriter(std::string path)
     : path_(path)

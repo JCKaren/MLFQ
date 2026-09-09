@@ -1,6 +1,6 @@
 #pragma once
 #include "AggregateMetrics.hpp"
-#include "ProcessMetrics.hpp"
+#include "../process/ProcessMetrics.hpp"
 #include <vector>
 
 class MetricsCalculator {

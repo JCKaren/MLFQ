@@ -1,8 +1,7 @@
 #pragma once
 #include <vector>
-#include "Process.hpp"
-#include "ISchedulingPolicy.hpp"
-
+#include "../process/Process.hpp"
+#include "../scheduling/ISchedulingPolicy.hpp"
 
 class SimulationEngine{
     public:

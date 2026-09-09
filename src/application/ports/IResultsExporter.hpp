@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include "Process.hpp"
+#include "../../domain/process/Process.hpp"
 
 class IResultsExporter {
 public:

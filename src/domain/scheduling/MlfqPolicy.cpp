@@ -1,7 +1,7 @@
+#include <stdexcept>
 #include "MlfqPolicy.hpp"
 #include "SimulationConfig.hpp"
 #include "ReadyQueue.hpp"
-#include <stdexcept>
 
 MlfqPolicy::MlfqPolicy(std::vector<Process>& processes, SimulationConfig config)
     : processes_(processes), config_(config)
