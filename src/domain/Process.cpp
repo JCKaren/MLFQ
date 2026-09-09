@@ -15,6 +15,6 @@ Process::Process(int pid, int arrival_time, int burst_time)
         throw std::invalid_argument("burst_time debe ser mayor que cero");
     }
     if (arrival_time_<0){
-        throw std::invalid_argument("arrival time debe ser mayor que cero");
+        throw std::invalid_argument("arrival time debe ser mayor o igual que cero");
     }
 }

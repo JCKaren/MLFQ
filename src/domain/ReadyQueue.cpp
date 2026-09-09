@@ -1,7 +1,7 @@
 #include "ReadyQueue.hpp"
 #include <stdexcept>
 
-ReadyQueue::ReadyQueue(int priority_level, int time_quantum) : priority_level_(priority_level), time_quantum_(time_quantum) {
+ReadyQueue::ReadyQueue(int time_quantum) : time_quantum_(time_quantum) {
     
 }
 
@@ -24,8 +24,4 @@ bool ReadyQueue::isEmpty() const {
 
 int ReadyQueue::getTimeQuantum() const {
     return time_quantum_;
-}
-
-int ReadyQueue::getPriorityLevel() const {
-    return priority_level_;
 }

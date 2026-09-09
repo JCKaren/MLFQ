@@ -56,7 +56,7 @@ class Process{
 
     ProcessMetrics metrics() const {
         if (finish_time_ == NOT_SET || first_response_time_ == NOT_SET) {
-            throw std::runtime_error("Process has not finished or responded yet.");
+            throw std::runtime_error("El proceso no ha terminado o respondido aún");
         }
         return ProcessMetrics{
             pid_,

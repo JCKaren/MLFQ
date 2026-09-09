@@ -8,7 +8,7 @@ SimulationEngine::SimulationEngine(std::vector<Process>& processes, IResultsExpo
     void SimulationEngine::run() {
         while (finished_count_ < processes_.size()) {
             arrivalPhase();
-            scheduling_policy_.onTick(current_tick_);
+            scheduling_policy_.onTick(current_tick_,  running_);
             if (running_ == -1) {
                running_ = scheduling_policy_.getNextProcess();
             }

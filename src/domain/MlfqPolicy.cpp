@@ -1,11 +1,24 @@
-#include "MLFQPolicy.hpp"
+#include "MlfqPolicy.hpp"
 #include "SimulationConfig.hpp"
 #include "ReadyQueue.hpp"
+#include <stdexcept>
 
 MlfqPolicy::MlfqPolicy(std::vector<Process>& processes, SimulationConfig config)
-    : processes_(processes), config_(config) {
-    for (size_t i = 0; i < config_.quantums.size(); ++i) {
-        queues_.emplace_back(static_cast<int>(i), config_.quantums[i]);
+    : processes_(processes), config_(config)
+    {
+    if (config_.quantums.empty()) {
+        throw std::invalid_argument("La lista de quantums esta vacia");
+    }
+    
+    if (config_.boost_interval <= 0){
+        throw std::invalid_argument("No se definio el intervalo de boost");
+    }
+    
+    for (int quantum : config_.quantums) {
+        if (quantum <= 0) {
+            throw std::invalid_argument("...");
+        }
+        queues_.emplace_back(quantum);
     }
 }
 
@@ -23,7 +36,7 @@ void MlfqPolicy::onProcessArrival(int process_index) {
     moveToQueue(process_index, 0);
 }
 
-void MlfqPolicy::onTick(int current_tick) {
+void MlfqPolicy::onTick(int current_tick, int running_process_index) {
     if (current_tick > 0 && current_tick % config_.boost_interval == 0) {
         for (size_t i = 1; i < queues_.size(); ++i) {
             while (!queues_[i].isEmpty()) {
@@ -31,7 +44,11 @@ void MlfqPolicy::onTick(int current_tick) {
                 moveToQueue(process_index, 0);
             }
         }
-    }
+        if (running_process_index != -1) {
+            processes_[running_process_index].changeQueue(0);
+            processes_[running_process_index].resetQuantum();
+        }
+    } 
 }
 
 void MlfqPolicy::onQuantumExpired(int process_index) {

@@ -9,7 +9,7 @@ class MlfqPolicy : public ISchedulingPolicy {
 
         int getNextProcess() override;
         void onProcessArrival(int process_index) override;
-        void onTick(int current_tick) override;
+        void onTick(int current_tick, int running_process_index) override;
         void onQuantumExpired(int process_index) override;
         bool shouldPreempt(int process_index) const override;
 
