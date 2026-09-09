@@ -1,5 +1,6 @@
 #pragma once
 #include <stdexcept>
+#include "ProcessMetrics.hpp"
 
 class Process{
     public: 
@@ -39,19 +40,13 @@ class Process{
         return quantum_used_;
     }
 
-    int responseTime() const{
-        return first_response_time_ - arrival_time_;
-    }
-
-    int turnaroundTime() const{
-        return finish_time_ - arrival_time_;
-    }
-
-    int waitingTime() const{
-        return turnaroundTime() - burst_time_;
-    }
-
     int pid() const {return pid_;}
+
+    int currentQueue() const {return current_queue_;}
+
+    int startTime() const { return start_time_; }
+
+    int finishTime() const { return finish_time_; }
 
     int arrivalTime() const {return arrival_time_;}
 
@@ -59,11 +54,17 @@ class Process{
 
     int remainingTime() const {return remaining_time_;}
 
-    int currentQueue() const {return current_queue_;}
-
-    int startTime() const { return start_time_; }
-
-    int finishTime() const { return finish_time_; }
+    ProcessMetrics metrics() const {
+        if (finish_time_ == NOT_SET || first_response_time_ == NOT_SET) {
+            throw std::runtime_error("Process has not finished or responded yet.");
+        }
+        return ProcessMetrics{
+            pid_,
+            responseTime(),
+            turnaroundTime(),
+            waitingTime()
+        };
+    }
 
 
     private:
@@ -77,6 +78,19 @@ class Process{
         int current_queue_;
         int quantum_used_;
         static constexpr int NOT_SET = -1;
+
+    int responseTime() const{
+        return first_response_time_ - arrival_time_;
+    }
+
+    int turnaroundTime() const{
+        return finish_time_ - arrival_time_;
+    }
+
+    int waitingTime() const{
+        return turnaroundTime() - burst_time_;
+    }
+
 };
 
 

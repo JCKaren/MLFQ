@@ -3,6 +3,9 @@
 #include "domain/SimulationConfig.hpp"
 #include "infrastructure/CsvResultsWriter.hpp"
 #include "domain/MLFQPolicy.hpp"
+#include "domain/ProcessMetrics.hpp"
+#include "domain/MetricsCalculator.hpp"
+#include "infrastructure/CsvAggregateWriter.hpp"
 #include <iostream>
 #include <vector>
 
@@ -23,7 +26,20 @@ int main() {
 
     CsvResultsWriter writer("results.csv");
     SimulationEngine engine(processes, writer, policy);
+
     engine.run();
+
+    std::vector<ProcessMetrics> processMetrics;
+
+    for (const auto& process : processes) {
+        processMetrics.push_back(process.metrics());
+    }
+
+    MetricsCalculator metricsCalculator;
+    AggregateMetrics aggregateMetrics  = metricsCalculator.calculateAggregateMetrics(processMetrics);
+
+    CsvAggregateWriter aggregateWriter("aggregate.csv");
+    aggregateWriter.exportAggregate(aggregateMetrics);
 
     return 0;
 

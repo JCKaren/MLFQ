@@ -20,7 +20,7 @@ class SimulationEngine{
 
         void checkCompletionTickPhase();
 
-        std::vector<Process> processes_;
+        std::vector<Process>& processes_;
         int current_tick_ = 0;
         int running_ = -1;
         size_t finished_count_ = 0;                         
