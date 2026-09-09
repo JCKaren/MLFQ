@@ -2,11 +2,11 @@
 #include "domain/SimulationEngine.hpp"
 #include "domain/SimulationConfig.hpp"
 #include "infrastructure/CsvResultsWriter.hpp"
-#include "domain/MLFQPolicy.hpp"
+#include "domain/MlfqPolicy.hpp"
 #include "domain/ProcessMetrics.hpp"
 #include "domain/MetricsCalculator.hpp"
 #include "infrastructure/CsvAggregateWriter.hpp"
-#include <iostream>
+#include "application/RunSimulation.hpp"
 #include <vector>
 
 
@@ -22,24 +22,14 @@ int main() {
     config.quantums = {2, 4, 8};
     config.boost_interval = 20;
 
-    MlfqPolicy policy(processes, config);
-
+  MlfqPolicy policy(processes, config);
     CsvResultsWriter writer("results.csv");
     SimulationEngine engine(processes, writer, policy);
-
-    engine.run();
-
-    std::vector<ProcessMetrics> processMetrics;
-
-    for (const auto& process : processes) {
-        processMetrics.push_back(process.metrics());
-    }
-
-    MetricsCalculator metricsCalculator;
-    AggregateMetrics aggregateMetrics  = metricsCalculator.calculateAggregateMetrics(processMetrics);
-
+    MetricsCalculator calculator;
     CsvAggregateWriter aggregateWriter("aggregate.csv");
-    aggregateWriter.exportAggregate(aggregateMetrics);
+
+    RunSimulation simulation(engine, processes, calculator, aggregateWriter);
+    simulation.execute();
 
     return 0;
 
