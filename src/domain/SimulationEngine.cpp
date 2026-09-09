@@ -1,7 +1,7 @@
 #include "SimulationEngine.hpp"
 
-SimulationEngine::SimulationEngine(std::vector<Process>& processes, IResultsExporter& results_exporter, ISchedulingPolicy& scheduling_policy)
-        : processes_(processes), results_exporter_(results_exporter), scheduling_policy_(scheduling_policy)
+SimulationEngine::SimulationEngine(std::vector<Process>& processes, ISchedulingPolicy& scheduling_policy)
+        : processes_(processes), scheduling_policy_(scheduling_policy)
     {
     }
 
@@ -24,7 +24,6 @@ SimulationEngine::SimulationEngine(std::vector<Process>& processes, IResultsExpo
             }
         }
         
-        results_exporter_.exportResults(processes_);
     }
 
 

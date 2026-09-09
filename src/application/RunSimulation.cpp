@@ -1,14 +1,18 @@
 #include "RunSimulation.hpp"
 
 RunSimulation::RunSimulation(SimulationEngine& engine, std::vector<Process>& processes,
-                             MetricsCalculator& calculator, IAggregateExporter& aggregate_exporter)
+                             MetricsCalculator& calculator, IResultsExporter& results_exporter,
+                             IAggregateExporter& aggregate_exporter)
     : engine_(engine), processes_(processes),
-      calculator_(calculator), aggregate_exporter_(aggregate_exporter)
+      calculator_(calculator), results_exporter_(results_exporter),
+      aggregate_exporter_(aggregate_exporter)
 {
 }
 
 void RunSimulation::execute() {
     engine_.run();
+
+    results_exporter_.exportResults(processes_);
 
     std::vector<ProcessMetrics> process_metrics;
     for (const auto& process : processes_) {

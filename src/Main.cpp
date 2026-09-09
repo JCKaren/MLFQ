@@ -23,12 +23,12 @@ int main() {
     config.boost_interval = 20;
 
   MlfqPolicy policy(processes, config);
-    CsvResultsWriter writer("results.csv");
-    SimulationEngine engine(processes, writer, policy);
+    CsvResultsWriter csv_writer("results.csv");
+    SimulationEngine engine(processes, policy);
     MetricsCalculator calculator;
     CsvAggregateWriter aggregateWriter("aggregate.csv");
 
-    RunSimulation simulation(engine, processes, calculator, aggregateWriter);
+    RunSimulation simulation(engine, processes, calculator, csv_writer, aggregateWriter);
     simulation.execute();
 
     return 0;
