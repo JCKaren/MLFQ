@@ -17,6 +17,8 @@ AggregateMetrics MetricsCalculator::calculateAggregateMetrics(const std::vector<
         sum_turnaround_time += process_metrics[i].turnaround_time;
         sum_waiting_time += process_metrics[i].waiting_time;
     } 
+    // Se calculan los promedios aquí para mantener la representación de cada proceso
+    // independiente de la agregación solicitada por la aplicación
     return AggregateMetrics{sum_response_time/static_cast<double>(process_counter),
                             sum_turnaround_time/static_cast<double>(process_counter),
                             sum_waiting_time/static_cast<double>(process_counter),

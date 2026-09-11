@@ -19,11 +19,15 @@ Process::Process(int pid, int arrival_time, int burst_time)
     }
 }
 
+/*Al momento de pasar un tiempo(tick) el tiempo que falta para terminar el proceso se ve disminuido
+y el quantum que tiene durante esa cola aumenta para garantizar el cambio entre colas*/
 void Process::consumeTick(){
     remaining_time_--;
     quantum_used_++;
 }
 
+/*Al pedir exporta ambos paremtros, se actualizan el la primera ejecucion dado a que 
+ambas representar el valor cuando se ejecuta por primera vez un proceso*/
 void Process::firstExecution(int current_tick){
     first_response_time_ = current_tick;
     start_time_ = current_tick;
@@ -53,6 +57,7 @@ int Process::quantumUsed(){
     return quantum_used_;
 }
 
+//individual metrics
 int Process::responseTime() const {
     return first_response_time_ - arrival_time_;
 }
@@ -66,6 +71,9 @@ int Process::waitingTime() const {
 
 }
 
+/*Primero se garantiza que el proceso haya terminado antes de consultar sus metricas y se 
+retorna un ProcessMetrics que contiene las metricas individuales y pid para realizar la exportacion
+mas fácil*/
 ProcessMetrics Process::metrics() const {
         if (finish_time_ == NOT_SET || first_response_time_ == NOT_SET) {
             throw std::runtime_error("El proceso no ha terminado o respondido aún");

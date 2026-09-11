@@ -11,7 +11,7 @@ RunSimulation::RunSimulation(SimulationEngine& engine, std::vector<Process>& pro
 
 void RunSimulation::execute() {
     engine_.run();
-
+    
     results_exporter_.exportResults(processes_);
 
     std::vector<ProcessMetrics> process_metrics;

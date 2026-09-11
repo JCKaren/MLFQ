@@ -12,5 +12,6 @@ class ReadyQueue {
 
     private:
         int time_quantum_;
+        // Cada nivel usa FIFO para dar el mismo turno a los procesos que comparten prioridad
         std::queue<int> process_queue_;
 };

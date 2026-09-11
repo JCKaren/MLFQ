@@ -37,6 +37,7 @@ class Process{
 
     int remainingTime() const {return remaining_time_;}
 
+    
     ProcessMetrics metrics() const;
 
     int responseTime() const;
@@ -56,7 +57,9 @@ class Process{
         int first_response_time_;
         int current_queue_;
         int quantum_used_;
-        static constexpr int NOT_SET = -1; 
+        //Flag para determinar que un parámetro aún no esta definido
+        //Se usa -1 dado a que un proceso puede iniciar en 0
+        static constexpr int NOT_SET = -1;  
 };
 
 
