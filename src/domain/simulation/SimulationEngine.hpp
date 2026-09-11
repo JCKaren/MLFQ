@@ -20,7 +20,7 @@ class SimulationEngine{
 
         std::vector<Process>& processes_;
         int current_tick_ = 0;
-        int running_ = -1;
+        int running_process_index_ = ISchedulingPolicy::NO_PROCESS;
         size_t finished_count_ = 0;                         
         ISchedulingPolicy& scheduling_policy_;
 };

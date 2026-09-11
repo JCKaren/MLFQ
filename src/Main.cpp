@@ -21,7 +21,7 @@ int main() {
     config.quantums = {2, 4, 8};
     config.boost_interval = 20;
 
-  MlfqPolicy policy(processes, config);
+    MlfqPolicy policy(processes, config);
     CsvResultsWriter csv_writer("results.csv");
     SimulationEngine engine(processes, policy);
     MetricsCalculator calculator;

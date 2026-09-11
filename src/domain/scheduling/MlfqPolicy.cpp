@@ -16,12 +16,16 @@ MlfqPolicy::MlfqPolicy(std::vector<Process>& processes, SimulationConfig config)
     
     for (int quantum : config_.quantums) {
         if (quantum <= 0) {
-            throw std::invalid_argument("...");
+            throw std::invalid_argument("Quantum definidos deben ser mayores a 0");
         }
         queues_.emplace_back(quantum);
     }
 }
 
+/*
+    Al consultar el siguiente proceso, se consulta la primera cola que no esta vacia 
+    y 
+*/ 
 int MlfqPolicy::getNextProcess()  {
     for (size_t i = 0; i < queues_.size(); ++i) {
         if (!queues_[i].isEmpty()) {
@@ -29,7 +33,7 @@ int MlfqPolicy::getNextProcess()  {
             return process_index;
         }
     }
-    return -1; 
+    return NO_PROCESS; 
 }
 
 void MlfqPolicy::onProcessArrival(int process_index) {
@@ -44,7 +48,7 @@ void MlfqPolicy::onTick(int current_tick, int running_process_index) {
                 moveToQueue(process_index, 0);
             }
         }
-        if (running_process_index != -1) {
+        if (running_process_index != NO_PROCESS) {
             processes_[running_process_index].changeQueue(0);
             processes_[running_process_index].resetQuantum();
         }
@@ -60,14 +64,14 @@ void MlfqPolicy::onQuantumExpired(int process_index) {
     }
 }
 
-void MlfqPolicy::moveToQueue(int process_index, int new_queue) {
-    processes_[process_index].changeQueue(new_queue);
-    processes_[process_index].resetQuantum();
-    queues_[new_queue].addProcess(process_index);
-}
-
 bool MlfqPolicy::shouldPreempt(int process_index) const {
     int queue_index = processes_[process_index].currentQueue();
     int time_quantum = queues_[queue_index].getTimeQuantum();
     return processes_[process_index].quantumUsed() >= time_quantum;
+}
+
+void MlfqPolicy::moveToQueue(int process_index, int new_queue) {
+    processes_[process_index].changeQueue(new_queue);
+    processes_[process_index].resetQuantum();
+    queues_[new_queue].addProcess(process_index);
 }

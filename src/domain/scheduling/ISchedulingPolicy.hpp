@@ -11,4 +11,5 @@ class ISchedulingPolicy {
         virtual void onTick(int current_tick, int running_index) = 0;
         virtual void onQuantumExpired(int process_index) = 0;
         virtual bool shouldPreempt(int process_index) const = 0;
+        static constexpr int NO_PROCESS = -1;
 };

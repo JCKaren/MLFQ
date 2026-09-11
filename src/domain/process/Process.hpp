@@ -6,40 +6,23 @@ class Process{
     public: 
     Process(int pid, int arrival_time, int burst_time);
 
-    void consumeTick(){
-        remaining_time_--;
-        quantum_used_++;
-    }
+    void consumeTick(); 
 
-    void firstExecution(int current_tick){
-        first_response_time_ = current_tick;
-        start_time_ = current_tick;
-    }
+    void firstExecution(int current_tick);
 
-    void finishProcess(int current_tick){
-        finish_time_ = current_tick;
-    }
+    void finishProcess(int current_tick);
     
-    void changeQueue(int new_queue_id){
-        current_queue_ = new_queue_id;
-    }
+    void changeQueue(int new_queue_id);
 
-    void resetQuantum(){
-        quantum_used_ = 0;
-    }
+    void resetQuantum();
 
-    bool isFinished () const{
-        return remaining_time_ == 0;
-    }
+    bool isFinished ();
 
-    bool hasResponded () const{
-        return first_response_time_ !=NOT_SET;
-    }
+    bool hasResponded ();
 
-    int quantumUsed () const{
-        return quantum_used_;
-    }
+    int quantumUsed ();
 
+    //Getters
     int pid() const {return pid_;}
 
     int currentQueue() const {return current_queue_;}
@@ -54,19 +37,15 @@ class Process{
 
     int remainingTime() const {return remaining_time_;}
 
-    ProcessMetrics metrics() const {
-        if (finish_time_ == NOT_SET || first_response_time_ == NOT_SET) {
-            throw std::runtime_error("El proceso no ha terminado o respondido aún");
-        }
-        return ProcessMetrics{
-            pid_,
-            responseTime(),
-            turnaroundTime(),
-            waitingTime()
-        };
-    }
+    ProcessMetrics metrics() const;
 
+    int responseTime() const;
 
+    int turnaroundTime() const;
+
+    int waitingTime() const;
+
+    
     private:
         int pid_;
         int arrival_time_;
@@ -77,20 +56,7 @@ class Process{
         int first_response_time_;
         int current_queue_;
         int quantum_used_;
-        static constexpr int NOT_SET = -1;
-
-    int responseTime() const{
-        return first_response_time_ - arrival_time_;
-    }
-
-    int turnaroundTime() const{
-        return finish_time_ - arrival_time_;
-    }
-
-    int waitingTime() const{
-        return turnaroundTime() - burst_time_;
-    }
-
+        static constexpr int NOT_SET = -1; 
 };
 
 
