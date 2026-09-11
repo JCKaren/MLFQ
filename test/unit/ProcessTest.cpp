@@ -48,7 +48,7 @@ void runProcessTest() {
     {
         Process process(1, 0, 8);
         process.changeQueue(2);
-        check(process.currentQueue() == 2, "el proceso ha sido iniciado en el tiempo 5");
+        check(process.currentQueue() == 2, "el proceso ha sido movido a la cola 2");
     }
     {
         bool lanzo = false;
